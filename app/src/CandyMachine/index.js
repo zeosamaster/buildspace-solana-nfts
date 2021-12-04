@@ -10,6 +10,7 @@ import {
   SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID,
 } from "./helpers";
 import { MintedNFTs } from "../components/MintedNFTs";
+import CountdownTimer from "../components/CountdownTimer";
 
 const {
   metadata: { Metadata, MetadataProgram },
@@ -335,7 +336,7 @@ const CandyMachine = ({ walletAddress }) => {
   return (
     machineStats && (
       <div className="machine-container">
-        <p>Drop Date: {machineStats.goLiveDateTimeString}</p>
+        <CountdownTimer dropDate={machineStats.goLiveDate * 1000} />
         <p>
           Items Minted: {machineStats.itemsRedeemed} /{" "}
           {machineStats.itemsAvailable}
