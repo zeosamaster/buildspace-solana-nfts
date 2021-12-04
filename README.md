@@ -51,6 +51,12 @@
 - Verify NFTs
   - `ts-node ~/metaplex/js/packages/cli/src/candy-machine-cli.ts verify --keypair ~/.config/solana/devnet.json`
 
+### Deploy candy machine
+
+- Deploy on devnet
+  - Note: `-p {number}` sets the desired NFT price
+  - `ts-node ~/metaplex/js/packages/cli/src/candy-machine-cli.ts create_candy_machine --env devnet --keypair ~/.config/solana/devnet.json -p 1`
+
 ## Start
 
 To run this project, clone this repo and follow these commands:
