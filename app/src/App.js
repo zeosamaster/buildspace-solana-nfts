@@ -9,7 +9,7 @@ const TWITTER_HANDLE = "_buildspace";
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 
 const App = () => {
-  const { connectWallet } = useWallet();
+  const { walletAddress, connect } = useWallet();
 
   return (
     <div className="App">
@@ -17,7 +17,7 @@ const App = () => {
         <div className="header-container">
           <p className="header">🍭 Candy Drop</p>
           <p className="sub-text">NFT drop machine with fair mint</p>
-          <ConnectWalletButton connectWallet={connectWallet} />
+          {!walletAddress && <ConnectWalletButton connectWallet={connect} />}
         </div>
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />

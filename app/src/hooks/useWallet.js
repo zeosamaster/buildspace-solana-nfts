@@ -1,28 +1,37 @@
 import React from "react";
-import { connectIfTrusted, connectWallet } from "../utils/wallet";
-
-function noop() {}
+import { connectWallet } from "../utils/wallet";
 
 export function useWallet() {
+  const [walletAddress, setWalletAddress] = React.useState(null);
   const [error, setError] = React.useState(null);
 
-  async function tryConnect() {
+  const tryConnect = React.useCallback(async (options) => {
     try {
-      await connectIfTrusted();
+      const { publicKey } = await connectWallet(options);
+      setWalletAddress(publicKey.toString());
       setError(null);
     } catch (e) {
+      setWalletAddress(null);
       setError(e);
     }
-  }
-
-  React.useEffect(() => {
-    window.addEventListener("load", tryConnect);
-    return () => window.removeEventListener("load", tryConnect);
   }, []);
 
-  if (error) {
-    return { error, connectWallet: noop };
-  }
+  React.useEffect(() => {
+    const onLoad = async () => {
+      await tryConnect({ onlyIfTrusted: true });
+    };
 
-  return { connectWallet };
+    window.addEventListener("load", onLoad);
+    return () => window.removeEventListener("load", onLoad);
+  }, [tryConnect]);
+
+  const connect = async () => {
+    if (error || walletAddress) {
+      return;
+    }
+
+    await tryConnect();
+  };
+
+  return { error, walletAddress, connect };
 }

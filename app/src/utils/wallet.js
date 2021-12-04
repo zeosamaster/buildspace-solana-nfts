@@ -1,12 +1,11 @@
-export function checkWallet() {
+export function getWallet() {
   if (!window.solana || !window.solana.isPhantom) {
     throw Error("Phantom wallet not available");
   }
+  return window.solana;
 }
 
-export async function connectIfTrusted() {
-  checkWallet();
-  return await window.solana.connect({ onlyIfTrusted: true });
+export async function connectWallet(options) {
+  const solana = getWallet();
+  return await solana.connect(options);
 }
-
-export async function connectWallet() {}
