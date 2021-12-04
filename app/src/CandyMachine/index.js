@@ -29,6 +29,7 @@ const MAX_CREATOR_LEN = 32 + 1 + 1;
 const CandyMachine = ({ walletAddress }) => {
   const [machineStats, setMachineStats] = React.useState(null);
   const [mints, setMints] = React.useState([]);
+  const [isMinting, setIsMinting] = React.useState(false);
 
   const getProvider = () => {
     const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
@@ -179,6 +180,8 @@ const CandyMachine = ({ walletAddress }) => {
   };
 
   const mintToken = async () => {
+    setIsMinting(true);
+
     try {
       const mint = web3.Keypair.generate();
       const token = await getTokenWallet(
@@ -264,12 +267,16 @@ const CandyMachine = ({ walletAddress }) => {
             const { result } = notification;
             if (!result.err) {
               console.log("NFT Minted!");
+              setIsMinting(false);
+              await getCandyMachineState();
             }
           }
         },
         { commitment: "processed" }
       );
     } catch (error) {
+      setIsMinting(false);
+
       let message = error.msg || "Minting failed! Please try again!";
 
       if (!error.msg) {
@@ -329,7 +336,11 @@ const CandyMachine = ({ walletAddress }) => {
           Items Minted: {machineStats.itemsRedeemed} /{" "}
           {machineStats.itemsAvailable}
         </p>
-        <button className="cta-button mint-button" onClick={mintToken}>
+        <button
+          className="cta-button mint-button"
+          onClick={mintToken}
+          disabled={isMinting}
+        >
           Mint NFT
         </button>
         {mints.length > 0 && <MintedNFTs mints={mints} />}
