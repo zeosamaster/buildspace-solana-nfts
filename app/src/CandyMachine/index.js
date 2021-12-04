@@ -39,7 +39,7 @@ const CandyMachine = ({ walletAddress }) => {
     return provider;
   };
 
-  const getCandyMachineState = async () => {
+  const getCandyMachineState = React.useCallback(async () => {
     const provider = getProvider();
 
     const idl = await Program.fetchIdl(candyMachineProgram, provider);
@@ -62,11 +62,11 @@ const CandyMachine = ({ walletAddress }) => {
       goLiveDate,
       goLiveDateTimeString,
     });
-  };
+  }, []);
 
   React.useEffect(() => {
     getCandyMachineState();
-  });
+  }, [getCandyMachineState]);
 
   // Actions
   const fetchHashTable = async (hash, metadataEnabled) => {
