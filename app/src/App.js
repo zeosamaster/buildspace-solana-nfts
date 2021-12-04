@@ -1,7 +1,8 @@
 import React from "react";
 import "./App.css";
 import twitterLogo from "./assets/twitter-logo.svg";
-import { checkIfWalletIsConnected } from "./utils/check-wallet";
+import { ConnectWalletButton } from "./components/ConnectWalletButton";
+import { checkIfWalletIsConnected, connectWallet } from "./utils/check-wallet";
 
 // Constants
 const TWITTER_HANDLE = "_buildspace";
@@ -22,6 +23,7 @@ const App = () => {
         <div className="header-container">
           <p className="header">🍭 Candy Drop</p>
           <p className="sub-text">NFT drop machine with fair mint</p>
+          <ConnectWalletButton connectWallet={connectWallet} />
         </div>
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />

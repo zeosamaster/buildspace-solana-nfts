@@ -16,3 +16,5 @@ export const checkIfWalletIsConnected = async () => {
     console.error(error);
   }
 };
+
+export const connectWallet = async () => {};
