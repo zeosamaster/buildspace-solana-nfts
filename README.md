@@ -74,6 +74,11 @@
 | REACT_APP_SOLANA_NETWORK       | Network to connect to        | `devnet`                                                              |
 | REACT_APP_SOLANA_RPC_HOST      | RPC to connect to            | `https://explorer-api.devnet.solana.com`                              |
 
+### Fund your devnet wallet
+
+To mint NFTs you're going to need SOL on your Solana devnet wallet
+Run `solana airdrop 5 YOUR_WALLET_ADDRESS` (max 5 tokens per airdrop)
+
 ## Start
 
 To run this project, clone this repo and follow these commands:
