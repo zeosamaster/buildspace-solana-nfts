@@ -27,6 +27,13 @@ const MAX_URI_LENGTH = 200;
 const MAX_SYMBOL_LENGTH = 10;
 const MAX_CREATOR_LEN = 32 + 1 + 1;
 
+function isPastDrop(stats) {
+  if (!stats || !stats.goLiveDate) {
+    return false;
+  }
+  return new Date() > stats.goLiveDate;
+}
+
 const CandyMachine = ({ walletAddress }) => {
   const [machineStats, setMachineStats] = React.useState(null);
   const [mints, setMints] = React.useState([]);
@@ -58,8 +65,8 @@ const CandyMachine = ({ walletAddress }) => {
     const itemsAvailable = candyMachine.data.itemsAvailable.toNumber();
     const itemsRedeemed = candyMachine.itemsRedeemed.toNumber();
     const itemsRemaining = itemsAvailable - itemsRedeemed;
-    const goLiveDate = candyMachine.data.goLiveDate.toNumber();
-    const goLiveDateTimeString = `${new Date(goLiveDate * 1000).toGMTString()}`;
+    const goLiveDate = new Date(candyMachine.data.goLiveDate.toNumber() * 1000);
+    const goLiveDateTimeString = `${goLiveDate.toGMTString()}`;
 
     setMachineStats({
       itemsAvailable,
@@ -94,13 +101,13 @@ const CandyMachine = ({ walletAddress }) => {
     setIsLoadingMints(false);
   }, []);
 
-  const getCandyMachineState = React.useCallback(async () => {
-    await Promise.all([getCandyMachineStats(), getCandyMachineMints()]);
-  }, [getCandyMachineStats, getCandyMachineMints]);
+  React.useEffect(() => {
+    getCandyMachineStats();
+  }, [getCandyMachineStats]);
 
   React.useEffect(() => {
-    getCandyMachineState();
-  }, [getCandyMachineState]);
+    machineStats && isPastDrop(machineStats) && getCandyMachineMints();
+  }, [machineStats, getCandyMachineMints]);
 
   // Actions
   const fetchHashTable = async (hash, metadataEnabled) => {
@@ -273,7 +280,7 @@ const CandyMachine = ({ walletAddress }) => {
             if (!result.err) {
               console.log("NFT Minted!");
               setIsMinting(false);
-              await getCandyMachineState();
+              await getCandyMachineStats();
             }
           }
         },
@@ -333,25 +340,34 @@ const CandyMachine = ({ walletAddress }) => {
     });
   };
 
-  return (
-    machineStats && (
+  if (!machineStats) {
+    return null;
+  }
+
+  if (!isPastDrop(machineStats)) {
+    return (
       <div className="machine-container">
-        <CountdownTimer dropDate={machineStats.goLiveDate * 1000} />
-        <p>
-          Items Minted: {machineStats.itemsRedeemed} /{" "}
-          {machineStats.itemsAvailable}
-        </p>
-        <button
-          className="cta-button mint-button"
-          onClick={mintToken}
-          disabled={isMinting}
-        >
-          Mint NFT
-        </button>
-        {isLoadingMints && <p>LOADING MINTS...</p>}
-        {mints.length > 0 && <MintedNFTs mints={mints} />}
+        <CountdownTimer dropDate={machineStats.goLiveDate} />
       </div>
-    )
+    );
+  }
+
+  return (
+    <div className="machine-container">
+      <p>
+        Items Minted: {machineStats.itemsRedeemed} /{" "}
+        {machineStats.itemsAvailable}
+      </p>
+      <button
+        className="cta-button mint-button"
+        onClick={mintToken}
+        disabled={isMinting}
+      >
+        Mint NFT
+      </button>
+      {isLoadingMints && <p>LOADING MINTS...</p>}
+      {mints.length > 0 && <MintedNFTs mints={mints} />}
+    </div>
   );
 };
 

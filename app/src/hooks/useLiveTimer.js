@@ -6,7 +6,7 @@ export function useLiveTimer(dropDate) {
   React.useEffect(() => {
     const interval = setInterval(() => {
       const currentDate = new Date().getTime();
-      const distance = new Date(dropDate).getTime() - currentDate;
+      const distance = dropDate.getTime() - currentDate;
 
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
       const hours = Math.floor(
