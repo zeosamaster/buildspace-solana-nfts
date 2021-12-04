@@ -30,6 +30,7 @@ const CandyMachine = ({ walletAddress }) => {
   const [machineStats, setMachineStats] = React.useState(null);
   const [mints, setMints] = React.useState([]);
   const [isMinting, setIsMinting] = React.useState(false);
+  const [isLoadingMints, setIsLoadingMints] = React.useState(false);
 
   const getProvider = () => {
     const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
@@ -69,6 +70,8 @@ const CandyMachine = ({ walletAddress }) => {
   }, []);
 
   const getCandyMachineMints = React.useCallback(async () => {
+    setIsLoadingMints(true);
+
     const data = await fetchHashTable(
       process.env.REACT_APP_CANDY_MACHINE_ID,
       true
@@ -87,6 +90,7 @@ const CandyMachine = ({ walletAddress }) => {
     );
 
     setMints(mintedImages);
+    setIsLoadingMints(false);
   }, []);
 
   const getCandyMachineState = React.useCallback(async () => {
@@ -343,6 +347,7 @@ const CandyMachine = ({ walletAddress }) => {
         >
           Mint NFT
         </button>
+        {isLoadingMints && <p>LOADING MINTS...</p>}
         {mints.length > 0 && <MintedNFTs mints={mints} />}
       </div>
     )
