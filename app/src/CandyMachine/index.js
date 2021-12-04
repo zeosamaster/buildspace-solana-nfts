@@ -25,6 +25,8 @@ const MAX_SYMBOL_LENGTH = 10;
 const MAX_CREATOR_LEN = 32 + 1 + 1;
 
 const CandyMachine = ({ walletAddress }) => {
+  const [machineStats, setMachineStats] = React.useState(null);
+
   const getProvider = () => {
     const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
     const connection = new Connection(rpcHost);
@@ -53,7 +55,7 @@ const CandyMachine = ({ walletAddress }) => {
     const goLiveDate = candyMachine.data.goLiveDate.toNumber();
     const goLiveDateTimeString = `${new Date(goLiveDate * 1000).toGMTString()}`;
 
-    console.log({
+    setMachineStats({
       itemsAvailable,
       itemsRedeemed,
       itemsRemaining,
@@ -292,13 +294,18 @@ const CandyMachine = ({ walletAddress }) => {
   };
 
   return (
-    <div className="machine-container">
-      <p>Drop Date:</p>
-      <p>Items Minted:</p>
-      <button className="cta-button mint-button" onClick={mintToken}>
-        Mint NFT
-      </button>
-    </div>
+    machineStats && (
+      <div className="machine-container">
+        <p>Drop Date: {machineStats.goLiveDateTimeString}</p>
+        <p>
+          Items Minted: {machineStats.itemsRedeemed} /{" "}
+          {machineStats.itemsAvailable}
+        </p>
+        <button className="cta-button mint-button" onClick={mintToken}>
+          Mint NFT
+        </button>
+      </div>
+    )
   );
 };
 
