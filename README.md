@@ -64,6 +64,16 @@
   - `mmm` = Jan/Feb/.../Dec
   - `ts-node ~/metaplex/js/packages/cli/src/candy-machine-cli.ts update_candy_machine --date "1 Dec 2021 00:12:00 GMT" --env devnet --keypair ~/.config/solana/devnet.json`
 
+### Setup env vars
+
+| Name                           | Description                  | How to find / value                                                   |
+| ------------------------------ | ---------------------------- | --------------------------------------------------------------------- |
+| REACT_APP_CANDY_MACHINE_CONFIG | Candy machine config ID      | `program.config` key inside `.cache/devnet-temp`                      |
+| REACT_APP_CANDY_MACHINE_ID     | Candy machine deploy address | `candyMachineAddress` key inside `.cache/devnet-temp`                 |
+| REACT_APP_TREASURY_ADDRESS     | Local wallet address         | `authority` key inside `.cache/devnet-temp` (or run `solana address`) |
+| REACT_APP_SOLANA_NETWORK       | Network to connect to        | `devnet`                                                              |
+| REACT_APP_SOLANA_RPC_HOST      | RPC to connect to            | `https://explorer-api.devnet.solana.com`                              |
+
 ## Start
 
 To run this project, clone this repo and follow these commands:
