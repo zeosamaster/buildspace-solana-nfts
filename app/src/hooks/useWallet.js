@@ -2,6 +2,7 @@ import React from "react";
 import { connectWallet } from "../utils/wallet";
 
 export function useWallet() {
+  const [loading, setLoading] = React.useState(true);
   const [walletAddress, setWalletAddress] = React.useState(null);
   const [error, setError] = React.useState(null);
 
@@ -19,6 +20,7 @@ export function useWallet() {
   React.useEffect(() => {
     const onLoad = async () => {
       await tryConnect({ onlyIfTrusted: true });
+      setLoading(false);
     };
 
     window.addEventListener("load", onLoad);
@@ -26,12 +28,12 @@ export function useWallet() {
   }, [tryConnect]);
 
   const connect = async () => {
-    if (error || walletAddress) {
+    if (loading || error || walletAddress) {
       return;
     }
 
     await tryConnect();
   };
 
-  return { error, walletAddress, connect };
+  return { loading, error, walletAddress, connect };
 }
