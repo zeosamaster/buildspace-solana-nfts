@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import twitterLogo from "./assets/twitter-logo.svg";
+import CandyMachine from "./CandyMachine";
 import { ConnectWalletButton } from "./components/ConnectWalletButton";
 import { useWallet } from "./hooks/useWallet";
 
@@ -21,6 +22,11 @@ const App = () => {
             <ConnectWalletButton connectWallet={connect} />
           )}
         </div>
+
+        {!loading && walletAddress && (
+          <CandyMachine walletAddress={window.solana} />
+        )}
+
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
           <a
