@@ -9,6 +9,8 @@ import {
   TOKEN_METADATA_PROGRAM_ID,
   SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID,
 } from "./helpers";
+import { MintedNFTs } from "../components/MintedNFTs";
+
 const {
   metadata: { Metadata, MetadataProgram },
 } = programs;
@@ -26,6 +28,7 @@ const MAX_CREATOR_LEN = 32 + 1 + 1;
 
 const CandyMachine = ({ walletAddress }) => {
   const [machineStats, setMachineStats] = React.useState(null);
+  const [mints, setMints] = React.useState([]);
 
   const getProvider = () => {
     const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
@@ -39,7 +42,7 @@ const CandyMachine = ({ walletAddress }) => {
     return provider;
   };
 
-  const getCandyMachineState = React.useCallback(async () => {
+  const getCandyMachineStats = React.useCallback(async () => {
     const provider = getProvider();
 
     const idl = await Program.fetchIdl(candyMachineProgram, provider);
@@ -63,6 +66,31 @@ const CandyMachine = ({ walletAddress }) => {
       goLiveDateTimeString,
     });
   }, []);
+
+  const getCandyMachineMints = React.useCallback(async () => {
+    const data = await fetchHashTable(
+      process.env.REACT_APP_CANDY_MACHINE_ID,
+      true
+    );
+
+    if (data.length === 0) {
+      return;
+    }
+
+    const mintedImages = await Promise.all(
+      data.map(async (mint) => {
+        const response = await fetch(mint.data.uri);
+        const parse = await response.json();
+        return parse.image;
+      })
+    );
+
+    setMints(mintedImages);
+  }, []);
+
+  const getCandyMachineState = React.useCallback(async () => {
+    await Promise.all([getCandyMachineStats(), getCandyMachineMints()]);
+  }, [getCandyMachineStats, getCandyMachineMints]);
 
   React.useEffect(() => {
     getCandyMachineState();
@@ -304,6 +332,7 @@ const CandyMachine = ({ walletAddress }) => {
         <button className="cta-button mint-button" onClick={mintToken}>
           Mint NFT
         </button>
+        {mints.length > 0 && <MintedNFTs mints={mints} />}
       </div>
     )
   );
