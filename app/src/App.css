@@ -82,6 +82,10 @@
   /* padding-bottom: 45px; */
 }
 
+.footer-container > * {
+  margin-right: 4px;
+}
+
 .twitter-logo {
   width: 35px;
   height: 35px;

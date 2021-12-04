@@ -355,7 +355,7 @@ const CandyMachine = ({ walletAddress }) => {
   return (
     <div className="machine-container">
       <p>
-        Items Minted: {machineStats.itemsRedeemed} /{" "}
+        Beers Minted: {machineStats.itemsRedeemed} /{" "}
         {machineStats.itemsAvailable}
       </p>
       {machineStats.itemsRedeemed === machineStats.itemsAvailable ? (
@@ -369,7 +369,7 @@ const CandyMachine = ({ walletAddress }) => {
           Mint NFT
         </button>
       )}
-      {isLoadingMints && <p>LOADING MINTS...</p>}
+      {isLoadingMints && <p>LOADING MINTED BEERS...</p>}
       {mints.length > 0 && <MintedNFTs mints={mints} />}
     </div>
   );

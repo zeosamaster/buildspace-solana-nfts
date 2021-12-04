@@ -1,7 +1,7 @@
 export function MintedNFTs({ mints }) {
   return (
     <div className="gif-container">
-      <p className="sub-text">Minted Items ✨</p>
+      <p className="sub-text">Minted Beers ✨</p>
       <div className="gif-grid">
         {mints.map((mint) => (
           <div className="gif-item" key={mint}>
