@@ -40,6 +40,17 @@
 - Fund the wallet with some fake SOL (since it's run on devnet)
   - `solana airdrop 5`
 
+### Upload NFTs to Metaplex
+
+- Get your public address
+  - `solana address`
+- Update NFT creator in all NFT JSON files (`assets/*.json`)
+  - Paste the public wallet address on `properties.creators.address`
+- Upload NFTs
+  - `ts-node ~/metaplex/js/packages/cli/src/candy-machine-cli.ts upload ./assets --env devnet --keypair ~/.config/solana/devnet.json`
+- Verify NFTs
+  - `ts-node ~/metaplex/js/packages/cli/src/candy-machine-cli.ts verify --keypair ~/.config/solana/devnet.json`
+
 ## Start
 
 To run this project, clone this repo and follow these commands:
