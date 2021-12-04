@@ -1,14 +1,14 @@
-import React from 'react';
-import { Connection, PublicKey } from '@solana/web3.js';
-import { Program, Provider, web3 } from '@project-serum/anchor';
-import { MintLayout, TOKEN_PROGRAM_ID, Token } from '@solana/spl-token';
-import { programs } from '@metaplex/js';
-import './CandyMachine.css';
+import React from "react";
+import { Connection, PublicKey } from "@solana/web3.js";
+import { Program, Provider, web3 } from "@project-serum/anchor";
+import { MintLayout, TOKEN_PROGRAM_ID, Token } from "@solana/spl-token";
+import { programs } from "@metaplex/js";
+import "./CandyMachine.css";
 import {
   candyMachineProgram,
   TOKEN_METADATA_PROGRAM_ID,
   SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID,
-} from './helpers';
+} from "./helpers";
 const {
   metadata: { Metadata, MetadataProgram },
 } = programs;
@@ -16,7 +16,7 @@ const {
 const config = new web3.PublicKey(process.env.REACT_APP_CANDY_MACHINE_CONFIG);
 const { SystemProgram } = web3;
 const opts = {
-  preflightCommitment: 'processed',
+  preflightCommitment: "processed",
 };
 
 const MAX_NAME_LENGTH = 32;
@@ -75,7 +75,7 @@ const CandyMachine = ({ walletAddress }) => {
     return (
       await PublicKey.findProgramAddress(
         [
-          Buffer.from('metadata'),
+          Buffer.from("metadata"),
           TOKEN_METADATA_PROGRAM_ID.toBuffer(),
           mint.toBuffer(),
         ],
@@ -88,10 +88,10 @@ const CandyMachine = ({ walletAddress }) => {
     return (
       await PublicKey.findProgramAddress(
         [
-          Buffer.from('metadata'),
+          Buffer.from("metadata"),
           TOKEN_METADATA_PROGRAM_ID.toBuffer(),
           mint.toBuffer(),
-          Buffer.from('edition'),
+          Buffer.from("edition"),
         ],
         TOKEN_METADATA_PROGRAM_ID
       )
@@ -181,31 +181,31 @@ const CandyMachine = ({ walletAddress }) => {
         instructions,
       });
 
-      console.log('txn:', txn);
+      console.log("txn:", txn);
 
       // Setup listener
       connection.onSignatureWithOptions(
         txn,
         async (notification, context) => {
-          if (notification.type === 'status') {
-            console.log('Receievd status event');
+          if (notification.type === "status") {
+            console.log("Receievd status event");
 
             const { result } = notification;
             if (!result.err) {
-              console.log('NFT Minted!');
+              console.log("NFT Minted!");
             }
           }
         },
-        { commitment: 'processed' }
+        { commitment: "processed" }
       );
     } catch (error) {
-      let message = error.msg || 'Minting failed! Please try again!';
+      let message = error.msg || "Minting failed! Please try again!";
 
       if (!error.msg) {
-        if (error.message.indexOf('0x138')) {
-        } else if (error.message.indexOf('0x137')) {
+        if (error.message.indexOf("0x138")) {
+        } else if (error.message.indexOf("0x137")) {
           message = `SOLD OUT!`;
-        } else if (error.message.indexOf('0x135')) {
+        } else if (error.message.indexOf("0x135")) {
           message = `Insufficient funds to mint. Please fund your wallet.`;
         }
       } else {
