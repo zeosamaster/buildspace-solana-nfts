@@ -86,3 +86,14 @@ To run this project, clone this repo and follow these commands:
 ## What is the .vscode Folder?
 
 If you use VSCode to build your app, we included a list of suggested extensions that will help you build this project! Once you open this project in VSCode, you will see a popup asking if you want to download the recommended extensions :).
+
+## When changing NFTs
+
+If you have already uploaded your NFT assets and you want to change something, here are the steps you need to take:
+
+1. Delete the `.cache` folder
+2. Update the NFT asset files
+3. [Upload NFTs to Metaplex](#upload-nfts-to-metaplex)
+4. [Deploy candy machine](#deploy-candy-machine)
+5. [Set a drop date (optional)](#set-a-drop-date-optional)
+6. [Setup env vars](#setup-env-vars)
