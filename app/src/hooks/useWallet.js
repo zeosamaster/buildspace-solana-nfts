@@ -4,16 +4,13 @@ import { connectWallet } from "../utils/wallet";
 export function useWallet() {
   const [loading, setLoading] = React.useState(true);
   const [walletAddress, setWalletAddress] = React.useState(null);
-  const [error, setError] = React.useState(null);
 
   const tryConnect = React.useCallback(async (options) => {
     try {
       const { publicKey } = await connectWallet(options);
       setWalletAddress(publicKey.toString());
-      setError(null);
     } catch (e) {
       setWalletAddress(null);
-      setError(e);
     }
   }, []);
 
@@ -28,12 +25,12 @@ export function useWallet() {
   }, [tryConnect]);
 
   const connect = async () => {
-    if (loading || error || walletAddress) {
+    if (loading || walletAddress) {
       return;
     }
 
     await tryConnect();
   };
 
-  return { loading, error, walletAddress, connect };
+  return { loading, walletAddress, connect };
 }
